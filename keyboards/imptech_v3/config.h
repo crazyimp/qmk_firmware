@@ -27,8 +27,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define PRODUCT         imptech_v3
 #define DESCRIPTION     Alya keyboard with imptech v3 controller
 
+#define USB_MAX_POWER_CONSUMPTION 100
+
 /* key matrix size */
-#define MATRIX_ROWS 5
+#define MATRIX_ROWS 8
 #define MATRIX_COLS 14
 
 /*
@@ -41,12 +43,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *                  ROW2COL = ROW = Anode (+), COL = Cathode (-, marked on diode)
  *
 */
-#define MATRIX_ROW_PINS { D0, D5 }
-#define MATRIX_COL_PINS { F1, F0, B0 }
-#define UNUSED_PINS
+#define MATRIX_INPUT_DDR    DDRD
+#define MATRIX_INPUT_PIN    PIND
+
+#define MATRIX_SR_DDR   DDRB
+#define MATRIX_SR_PORT  PORTB
+#define MATRIX_SR_DATA  PB4
+#define MATRIX_SR_CLK   PB5
+#define MATRIX_SR_CLR   PB6
+//#define MATRIX_ROW_PINS { D0, D1, D2, D3, D4, D5, D6, D7 }
+//#define MATRIX_COL_PINS { F1, F0, B0 }
+#define UNUSED_PINS /* TODO */
 
 /* COL2ROW, ROW2COL, or CUSTOM_MATRIX */
-#define DIODE_DIRECTION COL2ROW
+#define DIODE_DIRECTION CUSTOM_MATRIX
 
 // #define BACKLIGHT_PIN B7
 // #define BACKLIGHT_BREATHING
