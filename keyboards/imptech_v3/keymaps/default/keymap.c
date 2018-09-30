@@ -23,9 +23,12 @@ enum custom_keycodes {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT( /* Base */
-    KC_A,  KC_1,  KC_H, \
-      KC_TAB,  KC_SPC   \
-  ),
+    KC_E, KC_A, KC_A,   KC_A, KC_A, KC_A, KC_A,      KC_A, KC_A, KC_A, KC_A,    KC_A, KC_A, KC_B,
+    KC_A, KC_A, KC_A,   KC_A, KC_A, KC_A, KC_A,      KC_A, KC_A, KC_A, KC_A,    KC_A, KC_A, KC_A,
+    KC_A, KC_A, KC_A,   KC_A, KC_A, KC_A, KC_A,      KC_A, KC_A, KC_A, KC_A,    KC_A, KC_A, KC_A,
+    KC_A, KC_A, KC_A,   KC_A, KC_A, KC_A, KC_A,      KC_A, KC_A, KC_A, KC_A,    KC_A, KC_A, KC_A,
+    KC_D, KC_A, KC_A,   KC_A, KC_A, KC_A, KC_A,      KC_A, KC_A, KC_A, KC_A,    KC_A, KC_A, KC_C
+  )
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -48,14 +51,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
   }
   return true;
-}
-
-void matrix_init_user(void) {
-
-}
-
-void matrix_scan_user(void) {
-
 }
 
 void led_set_user(uint8_t usb_led) {
