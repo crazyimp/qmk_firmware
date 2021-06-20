@@ -23,20 +23,22 @@ enum layer_names {
 // Defines the keycodes used by our macros in process_record_user
 enum custom_keycodes {
     QMKBEST = SAFE_RANGE,
-    QMKURL
+    QMKURL,
+    MOVE_LED_LEFT,
+    MOVE_LED_RIGHT
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* Base */
     [_BASE] = LAYOUT(
-        KC_A,  KC_B, KC_C, KC_D, KC_E, KC_F, KC_H,
+        MOVE_LED_LEFT,  KC_B, KC_C, KC_D, KC_E, KC_F, KC_H,
         KC_A,  KC_B, KC_C, KC_D, KC_E, KC_F, KC_H,
         KC_A,        KC_C, KC_D, KC_E, KC_F, KC_H,
         KC_A,  KC_B, KC_C, KC_D, KC_E, KC_F, KC_H,
         KC_A,  KC_B, KC_C, KC_D, KC_E, KC_F, KC_H,
 
+	KC_1,  KC_2, KC_3, KC_4, KC_5, KC_6, MOVE_LED_RIGHT,
 	KC_1,  KC_2, KC_3, KC_4, KC_5, KC_6, BL_STEP,
-	KC_1,  KC_2, KC_3, KC_4, KC_5, KC_6, KC_7,
 	KC_1,  KC_2, KC_3, KC_4, KC_5,       KC_7,
                KC_2, KC_3, KC_4, KC_5, KC_6, KC_7,
 	KC_1,  KC_2, KC_3, KC_4, KC_5, KC_6, KC_7
@@ -47,9 +49,44 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    // )
 };
 
+void pulse_backlight_clk(void);
+void pulse_backlight_clk(void){
+	writePinLow(BACKLIGHT_DATA_CLOCK);
+	writePinHigh(BACKLIGHT_DATA_CLOCK);
+}
+
+void move_led(int8_t dir);
+void move_led(int8_t dir){
+	static uint8_t pos = 0;
+	pos = (pos + dir) % 16;
+
+	for(size_t i = 0; i < 8; i++){
+		if(i == pos){
+			writePinHigh(BACKLIGHT_DATA_PIN);
+		} else {
+			writePinLow(BACKLIGHT_DATA_PIN);
+		}
+		pulse_backlight_clk();
+	}
+	for(size_t i = 15; i >= 8; i--){
+		if(i == pos){
+			writePinHigh(BACKLIGHT_DATA_PIN);
+		} else {
+			writePinLow(BACKLIGHT_DATA_PIN);
+		}
+		pulse_backlight_clk();
+	}
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 	//print("process_record_user()\n");
     switch (keycode) {
+	case MOVE_LED_LEFT:
+		move_led(-1);
+		break;
+	case MOVE_LED_RIGHT:
+		move_led(1);
+		break;
         case QMKBEST:
             if (record->event.pressed) {
                 // when keycode QMKBEST is pressed
